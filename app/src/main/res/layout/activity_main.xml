@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7FA"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- App Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ASL Emoji Translator"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#222222"
+            android:layout_marginBottom="6dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Convert ASL hand emojis into meaningful words"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Input Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/emojiInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:padding="12dp"
+                    android:hint="Enter ASL hand emojis 🤟✋👉"
+                    android:textSize="18sp"
+                    android:background="@null"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Translate Button -->
+        <Button
+            android:id="@+id/translateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:paddingVertical="12dp"
+            android:text="Translate"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#4A90E2"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Clear Button -->
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:paddingVertical="12dp"
+            android:text="Clear"
+            android:textAllCaps="false"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Result Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Result"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#444444"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/resultText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your translated text will appear here"
+                    android:textSize="18sp"
+                    android:textColor="#222222"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>
