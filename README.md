@@ -1,254 +1,345 @@
-# 🧩 EmojiToTranslate — Emoji → Text + ASL Meaning Android App
+# EmojiToTranslate — Offline Android Emoji Translator
 
-**EmojiToTranslate** is an Android application that converts emojis and emoji combinations into meaningful English words and phrases.
-The app is designed as an **assistive communication tool** for users who communicate using emojis and basic sign representations.
+An offline Android application that converts supported hand, action and emergency emojis into simple English words or phrases using a rule-based dictionary.
 
-It also interprets **hand gesture emojis as simplified ASL (American Sign Language) meanings**.
+[![Android](https://img.shields.io/badge/Android-API%2026%2B-3DDC84?logo=android&logoColor=white)](https://developer.android.com/)
+[![Java](https://img.shields.io/badge/Java-11-ED8B00?logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![Gradle](https://img.shields.io/badge/Gradle-Kotlin%20DSL-02303A?logo=gradle&logoColor=white)](https://gradle.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
----
+## Overview
 
-## 📱 Project Objective
+EmojiToTranslate is a native Android application that demonstrates rule-based symbol translation.
 
-Many users — especially children, early learners, and some speech-impaired users — communicate using emojis instead of text.
-However, normal messaging apps cannot understand emoji intent.
+Users enter one or more supported emojis, tap **Translate**, and receive an English meaning. The application checks recognized two-emoji combinations before translating individual emojis.
 
-This app:
+All translation happens locally. The application does not require an internet connection, cloud service, external API or machine-learning model.
 
-* Reads emoji input
-* Detects patterns
-* Understands combinations
-* Converts them into human-readable sentences
+## Features
 
-It works like a **basic Natural Language Understanding (NLU) system**, but instead of words → meaning, it uses **emojis → meaning**.
+- Offline emoji translation
+- Single-emoji meanings
+- Two-emoji phrase recognition
+- Priority matching for supported emoji combinations
+- Unknown-emoji indicator
+- Translate and clear controls
+- Empty-input validation
+- Scrollable single-screen interface
+- No application permissions required
+- No advertising or tracking code
+- Works without an account
 
----
+## Supported Single Emojis
 
-## ✨ Features
+| Emoji | Output |
+|---|---|
+| 👍 | good |
+| 👎 | bad |
+| 🙏 | please |
+| ✋ | stop |
+| 🤟 | I love you |
+| 👉 | you |
+| 👈 | me |
+| 👆 | listen |
+| 👇 | look |
+| 👏 | clap |
+| 🤝 | friend |
+| 🧍 | person |
+| 🏃 | run |
+| 🚶 | walk |
+| 🏥 | hospital |
+| 📞 | call |
+| 🆘 | help |
 
-✔ Emoji to English translation
-✔ Emoji combination understanding
-✔ ASL hand emoji interpretation
-✔ Offline (no internet required)
-✔ Simple one-screen UI
-✔ Fast processing (no API calls)
+## Supported Combinations
 
----
+The translator checks two-emoji combinations before individual mappings.
 
-## 🧠 How It Works (Core Logic)
+| Combination | Output |
+|---|---|
+| 👍👍 | very good |
+| 👎👎 | very bad |
+| 🙏👉 | please you |
+| 👉👈 | you and me |
+| 👉🏥 | go to hospital |
+| 🆘📞 | call for help |
+| ✋👉 | stop you |
+| 👆🙏 | please listen |
+| 🏃🏥 | run to hospital |
+| 🤝🙂 | friends |
 
-The application uses a **rule-based semantic mapping system**.
+If an emoji is not recognized, the application displays:
 
-The `EmojiTranslator` class:
+```text
+[?]
+```
 
-1. Reads each emoji character
-2. Matches it inside a HashMap (emoji dictionary)
-3. Detects multi-emoji patterns (combinations)
-4. Replaces them with a meaningful sentence
+## How Translation Works
+
+The application uses two Java `HashMap` dictionaries:
+
+- `singleMap` stores individual emoji meanings.
+- `comboMap` stores recognized two-emoji phrases.
+
+For each input:
+
+1. The text is split into Unicode code points.
+2. The translator checks whether the current emoji and the next emoji form a recognized combination.
+3. When a combination is found, its phrase is added to the result and both emojis are consumed.
+4. Otherwise, the individual emoji meaning is used.
+5. Unsupported emojis are represented by `[?]`.
 
 Example:
 
-```
-🙂 = happy
-🍕 = pizza
-🙂🍕 = I want pizza
-```
-
-Instead of translating emoji individually, the app checks:
-
-> “Is this a single emoji OR a meaningful sequence?”
-
-If a sequence is found → higher priority translation is applied.
-
-This is similar to:
-
-* NLP tokenization
-* Pattern matching
-* Intent detection
-
----
-
-## 🔗 Emoji Combination Intelligence
-
-The app recognizes multiple emoji combinations:
-
-| Emoji   | Meaning         |
-| ------- | --------------- |
-| ❤️🙏    | Thank you       |
-| 😭💔    | Heartbroken     |
-| 😡👊    | I am angry      |
-| 🏃‍♂️💨 | I am running    |
-| 🌙😴    | Good night      |
-| ☀️😊    | Good morning    |
-| 🍕🤤    | I want pizza    |
-| 📚🧠    | Studying        |
-| 🏫🎒    | Going to school |
-| 🚗🏠    | Reached home    |
-
-This simulates **human intention detection** rather than word replacement.
-
----
-
-## 🤟 ASL Hand Emoji Meanings
-
-The app interprets hand gesture emojis as simplified sign language meanings.
-
-| Emoji | Interpreted Meaning |
-| ----- | ------------------- |
-| 👍    | Yes / Good          |
-| 👎    | No                  |
-| 👋    | Hello               |
-| 🤝    | Agreement / Deal    |
-| 🙏    | Please / Thank you  |
-| ✌️    | Peace               |
-| 🤙    | Call me             |
-| 👌    | OK                  |
-| ✋     | Stop                |
-| 🤞    | Hope / Wish         |
-
-This makes the app useful for:
-
-* basic assistive communication
-* educational demonstration
-* children learning signs
-
----
-
-## 🏗 Tech Stack
-
-* Java (Android)
-* Android Studio
-* ConstraintLayout
-* Material UI Components
-* HashMap based NLP logic
-
-No:
-
-* APIs
-* Cloud
-* Internet
-* ML models
-
-The intelligence is **fully local and offline**.
-
----
-
-## 📂 Project Structure
-
-```
-com.example.emojitotranslate
-│
-├── MainActivity.java
-├── EmojiTranslator.java   ← Core logic
-│
-├── res/layout/
-│   └── activity_main.xml
-│
-├── res/values/
-│   ├── colors.xml
-│   ├── strings.xml
-│   └── themes.xml
+```text
+Input:  🆘📞
+Output: call for help
 ```
 
----
+Another example:
 
-## 🚀 Installation
-
-1. Clone the repository
-
+```text
+Input:  👍👍
+Output: very good
 ```
+
+## Tech Stack
+
+- Java 11
+- Android SDK
+- AndroidX AppCompat
+- Material Components
+- CardView
+- ConstraintLayout dependency
+- XML layouts
+- Gradle Kotlin DSL
+
+## Android Configuration
+
+| Setting | Value |
+|---|---:|
+| Minimum SDK | API 26 — Android 8.0 |
+| Target SDK | API 36 |
+| Compile SDK | API 36 |
+| Version | 1.0 |
+| Application ID | `com.example.EmojiToTranslate` |
+
+## Project Structure
+
+```text
+EmojiToTranslate/
+├── app/
+│   ├── build.gradle.kts
+│   └── src/main/
+│       ├── AndroidManifest.xml
+│       ├── java/com/example/EmojiToTranslate/
+│       │   ├── MainActivity.java
+│       │   └── EmojiTranslator.java
+│       └── res/
+│           ├── layout/activity_main.xml
+│           └── values/
+├── gradle/
+├── build.gradle.kts
+├── settings.gradle.kts
+├── gradlew
+├── gradlew.bat
+├── LICENSE
+└── README.md
+```
+
+## Requirements
+
+- Android Studio
+- Android SDK 36
+- JDK 11 or a compatible Android Studio embedded JDK
+- Android device or emulator running Android 8.0 or newer
+
+## Installation
+
+Clone the repository:
+
+```bash
 git clone https://github.com/Ankit-ku-panda/EmojiToTranslate.git
+cd EmojiToTranslate
 ```
 
-2. Open in **Android Studio**
+Open the project in Android Studio:
 
-3. Let Gradle sync
+1. Select **Open**.
+2. Choose the cloned `EmojiToTranslate` directory.
+3. Wait for Gradle synchronization to complete.
+4. Install any SDK components requested by Android Studio.
+5. Select an emulator or connected Android device.
+6. Click **Run**.
 
-4. Run on:
+## Build from the Command Line
 
-* Android Emulator
-* OR Physical device (recommended)
+### Windows
 
-Minimum Android Version: **Android 8.0 (API 26)**
-
----
-
-## 🧪 Example Usage
-
-Input:
-
-```
-👋🙂
+```powershell
+.\gradlew.bat assembleDebug
 ```
 
-Output:
+### Linux or macOS
 
-```
-Hello, I am happy
-```
-
-Input:
-
-```
-🙏❤️
+```bash
+chmod +x gradlew
+./gradlew assembleDebug
 ```
 
-Output:
+The debug APK will be generated at:
 
-```
-Thank you
-```
-
-Input:
-
-```
-🍕🤤
+```text
+app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Output:
+## Install the Debug APK
 
+With Android Debug Bridge configured and a device connected:
+
+```bash
+adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
-I want pizza
+
+## Run Tests
+
+### Windows
+
+```powershell
+.\gradlew.bat test
 ```
 
----
+### Linux or macOS
 
-## 🎯 Why This Project is Important
+```bash
+./gradlew test
+```
 
-This project demonstrates concepts of:
+Run connected-device tests with:
 
-* Natural Language Processing (NLP)
-* Pattern recognition
-* Human-computer interaction
-* Assistive technology
-* Semantic mapping
+```bash
+./gradlew connectedAndroidTest
+```
 
-Instead of processing **words**, it processes **symbols (emojis)** — which is a growing modern communication language.
+## Usage
 
----
+1. Open the application.
+2. Enter one or more supported emojis.
+3. Tap **Translate**.
+4. Read the result displayed below the buttons.
+5. Tap **Clear** to reset the input and result.
 
-## 🔮 Future Improvements
+## Add a New Single Mapping
 
-* Voice output (Text-to-Speech)
-* Camera hand gesture recognition
-* ML-based intent prediction
-* Chat keyboard integration
-* WhatsApp accessibility service
-* Multi-language translation
+Open:
 
----
+```text
+app/src/main/java/com/example/EmojiToTranslate/EmojiTranslator.java
+```
 
-## 👨‍💻 Author
+Add a mapping inside the constructor:
+
+```java
+singleMap.put("😊", "happy");
+```
+
+## Add a New Combination
+
+Add a two-emoji mapping to `comboMap`:
+
+```java
+comboMap.put("👋🙂", "hello friend");
+```
+
+Add more-specific combinations before introducing logic that could overlap with them.
+
+## Privacy
+
+EmojiToTranslate:
+
+- Does not request internet access
+- Does not collect user information
+- Does not create an account
+- Does not transmit entered emojis
+- Does not contain analytics or advertising code
+
+Input is processed locally while the application is running.
+
+## Important Clarification
+
+This application uses developer-defined meanings for emoji symbols. It does not recognize physical hand gestures, process camera input, or translate formal American Sign Language grammar.
+
+Emoji gestures and ASL signs are not equivalent in every context. The app should therefore be presented as:
+
+- An educational rule-based translator
+- A simplified communication aid
+- An Android development demonstration
+
+It should not be treated as a professional ASL interpretation service.
+
+## Current Limitations
+
+- Only predefined emojis and two-emoji combinations are supported.
+- Output is limited to English.
+- Translation is dictionary-based and does not understand conversation context.
+- The code-point splitter does not fully combine every Unicode emoji sequence.
+- Variation selectors, skin-tone modifiers and zero-width-joiner sequences may produce `[?]`.
+- The app does not provide speech output.
+- The app does not translate typed English into emojis.
+- The app does not use a camera or recognize real hand gestures.
+
+## Future Improvements
+
+- Support Unicode grapheme clusters correctly
+- Add skin-tone and variation-selector handling
+- Move mappings into a JSON or resource file
+- Add multilingual translations
+- Add search and autocomplete
+- Add translation history
+- Add copy and share buttons
+- Add accessibility descriptions
+- Add unit tests for all supported mappings
+- Add optional text-to-speech
+- Allow bidirectional text-to-emoji translation
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repository.
+2. Create a branch:
+
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+
+3. Commit your changes:
+
+   ```bash
+   git commit -m "Add your feature"
+   ```
+
+4. Push the branch:
+
+   ```bash
+   git push origin feature/your-feature
+   ```
+
+5. Open a pull request.
+
+For bugs and suggestions, use the repository’s [Issues page](https://github.com/Ankit-ku-panda/EmojiToTranslate/issues).
+
+## Author
 
 **Ankit Kumar Panda**
-B.Tech Student | Android Developer | Cybersecurity Learner
 
-GitHub:
-https://github.com/Ankit-ku-panda
+- GitHub: [Ankit-ku-panda](https://github.com/Ankit-ku-panda)
+- Repository: [EmojiToTranslate](https://github.com/Ankit-ku-panda/EmojiToTranslate)
+
+## License
+
+This project is distributed under the [MIT License](LICENSE).
 
 ---
 
-## 📜 License
-
-This project is for **educational and research purposes**.
-
-You may modify and use it with credit.
+If this project helped you, consider giving the repository a star.
